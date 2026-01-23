@@ -54,7 +54,6 @@
               "extractLicenses": false,
               "sourceMap": true
             }
-          },
           }
         },
         "serve": {
@@ -71,6 +70,9 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
 
