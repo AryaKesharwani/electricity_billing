@@ -1,5 +1,59 @@
 <div class="home-container">
-  <h2>{{ message }}</h2>
-  <p>This is the home page of the Electricity Billing System.</p>
-</div>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="gradient-text">Electricity Billing System</span>
+      </h1>
+      <p class="hero-subtitle">
+        Manage your electricity bills effortlessly. View, track, and pay your bills online with ease.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn btn-primary">Get Started</a>
+        <a routerLink="/login" class="btn btn-secondary">Sign In</a>
+      </div>
+    </div>
+  </div>
 
+  <!-- Features Section -->
+  <div class="features-section">
+    <h2 class="section-title">Quick Actions</h2>
+    <p class="section-subtitle">Access all features with a single click</p>
+    
+    <div class="features-grid">
+      <div 
+        class="feature-card" 
+        *ngFor="let feature of features"
+        [routerLink]="feature.route"
+        [style.border-top-color]="feature.color"
+      >
+        <div class="feature-icon" [style.background]="feature.color + '20'">
+          <span class="icon-emoji">{{ feature.icon }}</span>
+        </div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+        <div class="feature-link">
+          <span>Go to {{ feature.title }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info-section">
+    <div class="info-card">
+      <div class="info-icon">⚡</div>
+      <h3>Why Choose Us?</h3>
+      <ul class="info-list">
+        <li>✅ Secure online payment processing</li>
+        <li>✅ Real-time bill tracking and updates</li>
+        <li>✅ 24/7 customer support</li>
+        <li>✅ Easy bill management</li>
+        <li>✅ Instant payment confirmation</li>
+      </ul>
+    </div>
+  </div>
+</div>
