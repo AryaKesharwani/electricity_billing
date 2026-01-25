@@ -31,6 +31,10 @@ export const routes: Routes = [
     path: 'customer/dashboard',
     redirectTo: '/home',
     pathMatch: 'full'
+  },
+  {
+    path: 'bills',
+    loadComponent: () => import('./view-bills/view-bills.component').then(m => m.ViewBillsComponent)
   }
 ];
 
