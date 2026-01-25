@@ -35,6 +35,10 @@ export const routes: Routes = [
   {
     path: 'bills',
     loadComponent: () => import('./view-bills/view-bills.component').then(m => m.ViewBillsComponent)
+  },
+  {
+    path: 'pay-bill',
+    loadComponent: () => import('./pay-bill/pay-bill.component').then(m => m.PayBillComponent)
   }
 ];
 
