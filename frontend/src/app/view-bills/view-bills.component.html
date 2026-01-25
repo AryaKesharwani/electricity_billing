@@ -1,0 +1,94 @@
+<div class="view-bills-container">
+  <div class="bills-card">
+    <div class="header-section">
+      <h2>View Bills</h2>
+      <p class="subtitle">View all your electricity bills</p>
+    </div>
+
+    <!-- Consumer ID Input -->
+    <div class="search-section">
+      <div class="form-group">
+        <label for="consumerId">Consumer ID</label>
+        <div class="input-group">
+          <input
+            type="text"
+            id="consumerId"
+            [(ngModel)]="consumerId"
+            (keyup.enter)="onConsumerIdChange()"
+            placeholder="Enter Consumer ID"
+            class="consumer-input"
+          />
+          <button
+            type="button"
+            class="btn btn-search"
+            (click)="onConsumerIdChange()"
+            [disabled]="isLoading || !consumerId"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <strong>Error!</strong> {{ errorMessage }}
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading bills...</p>
+    </div>
+
+    <!-- Bills Table -->
+    <div *ngIf="!isLoading && hasBills" class="bills-table-container">
+      <table class="bills-table">
+        <thead>
+          <tr>
+            <th>Bill ID</th>
+            <th>Bill Date</th>
+            <th>Due Date</th>
+            <th>Units Consumed</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of bills">
+            <td>{{ bill.billId }}</td>
+            <td>{{ formatDate(bill.billDate) }}</td>
+            <td>{{ formatDate(bill.dueDate) }}</td>
+            <td>{{ bill.unitsConsumed }} units</td>
+            <td class="amount-cell">{{ formatCurrency(bill.amount) }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(bill.status)">
+                {{ bill.status }}
+              </span>
+            </td>
+            <td>{{ bill.description || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- No Bills Message -->
+    <div *ngIf="!isLoading && !hasBills && consumerId" class="no-bills-message">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p>No bills found for Consumer ID: {{ consumerId }}</p>
+    </div>
+
+    <!-- Empty State (No Consumer ID) -->
+    <div *ngIf="!isLoading && !consumerId" class="empty-state">
+      <p>Please enter a Consumer ID to view bills</p>
+    </div>
+
+    <div class="footer-links">
+      <p><a routerLink="/home">Back to Home</a></p>
+    </div>
+  </div>
+</div>
