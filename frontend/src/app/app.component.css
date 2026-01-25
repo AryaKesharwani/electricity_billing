@@ -1,23 +1,15 @@
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-header {
-  background-color: #1976d2;
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-header h1 {
+  width: 100vw;
+  min-height: 100vh;
   margin: 0;
-  font-size: 24px;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 main {
-  min-height: 400px;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
