@@ -17,6 +17,20 @@ export const routes: Routes = [
   {
     path: 'admin/register',
     loadComponent: () => import('./admin-register/admin-register.component').then(m => m.AdminRegisterComponent)
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'admin/dashboard',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'customer/dashboard',
+    redirectTo: '/home',
+    pathMatch: 'full'
   }
 ];
 
