@@ -6,6 +6,7 @@ import com.electricitybilling.entity.Login;
 import com.electricitybilling.exception.AccountDeactivatedException;
 import com.electricitybilling.exception.InvalidCredentialsException;
 import com.electricitybilling.repository.LoginRepository;
+import com.electricitybilling.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
+    private final JwtUtil jwtUtil;
 
     @Transactional(readOnly = true)
     public LoginResponse validateLogin(LoginRequest request) {
@@ -41,12 +43,20 @@ public class LoginService {
                 throw new InvalidCredentialsException("Invalid username or password");
             }
 
-            // Return successful login response
+            // Generate JWT token
+            String token = jwtUtil.generateToken(
+                    login.getEmail(),
+                    login.getUserType().name(),
+                    login.getConsumerId()
+            );
+
+            // Return successful login response with JWT token
             return new LoginResponse(
                     login.getEmail(),
                     login.getUserType().name(),
                     login.getStatus().name(),
-                    "Login successful"
+                    "Login successful",
+                    token
             );
 
         } catch (InvalidCredentialsException | AccountDeactivatedException e) {
