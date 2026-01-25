@@ -65,6 +65,7 @@ public class CustomerService {
             login.setEmail(request.getEmail());
             login.setUserId(request.getUserId());
             login.setPassword(request.getPassword());
+            login.setUserType(Login.UserType.CUSTOMER);
             login.setStatus(Login.AccountStatus.ACTIVE);
 
             // Save login

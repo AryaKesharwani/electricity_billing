@@ -21,8 +21,7 @@ public class Login {
     @Column(name = "login_id")
     private Long loginId;
 
-    @Column(name = "consumer_id", nullable = false, unique = true)
-    @NotBlank(message = "Consumer ID is required")
+    @Column(name = "consumer_id", unique = true)
     private String consumerId;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -30,13 +29,16 @@ public class Login {
     @Email(message = "Email format is invalid")
     private String email;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    @NotBlank(message = "User ID is required")
+    @Column(name = "user_id", unique = true)
     private String userId;
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Password is required")
     private String password;
+
+    @Column(name = "user_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserType userType = UserType.CUSTOMER;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -63,5 +65,11 @@ public class Login {
     public enum AccountStatus {
         ACTIVE,
         INACTIVE
+    }
+
+    // Enum for user type
+    public enum UserType {
+        ADMIN,
+        CUSTOMER
     }
 }
