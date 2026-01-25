@@ -10,6 +10,15 @@ export interface BillResponse {
   createdAt: string;
 }
 
+export interface CreateBillRequest {
+  consumerId: string;
+  billDate: string;
+  dueDate: string;
+  unitsConsumed: number;
+  amount: number;
+  description?: string;
+}
+
 export interface ApiError {
   status: number;
   error: string;

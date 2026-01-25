@@ -1,11 +1,13 @@
 package com.electricitybilling.controller;
 
 import com.electricitybilling.dto.BillResponse;
+import com.electricitybilling.dto.CreateBillRequest;
 import com.electricitybilling.service.BillService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +52,23 @@ public class BillController {
         
         List<BillResponse> bills = billService.viewAllBills();
         return new ResponseEntity<>(bills, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Create a new bill",
+            description = "Create a new bill for a customer. This is an admin-only operation."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Bill created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Customer not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error or database error")
+    })
+    @PostMapping
+    public ResponseEntity<BillResponse> createBill(
+            @Valid @RequestBody CreateBillRequest request) {
+        
+        BillResponse response = billService.createBill(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

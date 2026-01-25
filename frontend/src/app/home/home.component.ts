@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,7 +9,11 @@ import { RouterModule } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  isLoggedIn = false;
+  userEmail = '';
+  userType = '';
+
   features = [
     {
       icon: '👤',
@@ -45,6 +49,63 @@ export class HomeComponent {
       description: 'Administrator registration and management',
       route: '/admin/register',
       color: '#f5576c'
+    },
+    {
+      icon: '➕',
+      title: 'Create Bill',
+      description: 'Generate new bills for customers (Admin only)',
+      route: '/create-bill',
+      color: '#43e97b'
     }
   ];
+
+  benefits = [
+    {
+      icon: '🔒',
+      title: 'Secure Payments',
+      description: 'Bank-level encryption for all transactions'
+    },
+    {
+      icon: '⚡',
+      title: 'Instant Updates',
+      description: 'Real-time bill tracking and notifications'
+    },
+    {
+      icon: '📱',
+      title: 'Easy Access',
+      description: 'Manage bills from anywhere, anytime'
+    },
+    {
+      icon: '💬',
+      title: '24/7 Support',
+      description: 'Round-the-clock customer assistance'
+    }
+  ];
+
+  ngOnInit() {
+    // Check if user is logged in
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      this.isLoggedIn = true;
+      this.userEmail = sessionStorage.getItem('email') || '';
+      this.userType = sessionStorage.getItem('userType') || '';
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+    this.isLoggedIn = false;
+    this.userEmail = '';
+    this.userType = '';
+    window.location.reload();
+  }
+
+  goToDashboard() {
+    if (this.userType === 'ADMIN') {
+      window.location.href = '/admin/dashboard';
+    } else {
+      window.location.href = '/customer/dashboard';
+    }
+  }
 }

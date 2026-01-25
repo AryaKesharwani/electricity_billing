@@ -1,0 +1,15 @@
+package com.electricitybilling.exception;
+
+import lombok.Getter;
+
+@Getter
+public class CustomerNotFoundException extends RuntimeException {
+    
+    public CustomerNotFoundException(String message) {
+        super(message);
+    }
+    
+    public CustomerNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

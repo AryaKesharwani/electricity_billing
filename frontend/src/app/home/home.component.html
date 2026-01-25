@@ -1,42 +1,130 @@
 <div class="home-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-text">Electricity Billing</span>
+      </div>
+      <div class="nav-links">
+        <a routerLink="/home" class="nav-link active">Home</a>
+        <a routerLink="/bills" class="nav-link">Bills</a>
+        <a routerLink="/pay-bill" class="nav-link">Pay Bill</a>
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <span class="user-email">{{ userEmail }}</span>
+          <button class="btn-nav" (click)="goToDashboard()">Dashboard</button>
+          <button class="btn-nav btn-logout" (click)="logout()">Logout</button>
+        </div>
+        <div *ngIf="!isLoggedIn" class="auth-buttons">
+          <a routerLink="/login" class="btn-nav">Login</a>
+          <a routerLink="/register" class="btn-nav btn-primary-nav">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="hero-content">
+      <div class="hero-badge" *ngIf="isLoggedIn">
+        <span>Welcome back, {{ userEmail }}!</span>
+      </div>
       <h1 class="hero-title">
         <span class="gradient-text">Electricity Billing System</span>
       </h1>
       <p class="hero-subtitle">
         Manage your electricity bills effortlessly. View, track, and pay your bills online with ease.
+        <span *ngIf="isLoggedIn">You're all set to manage your account!</span>
       </p>
       <div class="hero-actions">
-        <a routerLink="/register" class="btn btn-primary">Get Started</a>
-        <a routerLink="/login" class="btn btn-secondary">Sign In</a>
+        <a *ngIf="!isLoggedIn" routerLink="/register" class="btn btn-primary">
+          <span>Get Started</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a *ngIf="!isLoggedIn" routerLink="/login" class="btn btn-secondary">Sign In</a>
+        <button *ngIf="isLoggedIn" (click)="goToDashboard()" class="btn btn-primary">
+          <span>Go to Dashboard</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="hero-decoration">
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
+      <div class="decoration-circle circle-3"></div>
+    </div>
+  </div>
+
+  <!-- Benefits Section -->
+  <div class="benefits-section">
+    <div class="benefits-container">
+      <h2 class="section-title">Why Choose Our Platform?</h2>
+      <p class="section-subtitle">Experience seamless bill management with our advanced features</p>
+      
+      <div class="benefits-grid">
+        <div class="benefit-card" *ngFor="let benefit of benefits">
+          <div class="benefit-icon">{{ benefit.icon }}</div>
+          <h3>{{ benefit.title }}</h3>
+          <p>{{ benefit.description }}</p>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Features Section -->
   <div class="features-section">
-    <h2 class="section-title">Quick Actions</h2>
-    <p class="section-subtitle">Access all features with a single click</p>
-    
-    <div class="features-grid">
-      <div 
-        class="feature-card" 
-        *ngFor="let feature of features"
-        [routerLink]="feature.route"
-        [style.border-top-color]="feature.color"
-      >
-        <div class="feature-icon" [style.background]="feature.color + '20'">
-          <span class="icon-emoji">{{ feature.icon }}</span>
+    <div class="features-container">
+      <h2 class="section-title">Quick Actions</h2>
+      <p class="section-subtitle">Access all features with a single click</p>
+      
+      <div class="features-grid">
+        <div 
+          class="feature-card" 
+          *ngFor="let feature of features"
+          [routerLink]="feature.route"
+          [style.border-top-color]="feature.color"
+        >
+          <div class="feature-icon" [style.background]="feature.color + '20'">
+            <span class="icon-emoji">{{ feature.icon }}</span>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+          <div class="feature-link">
+            <span>Explore</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
-        <h3 class="feature-title">{{ feature.title }}</h3>
-        <p class="feature-description">{{ feature.description }}</p>
-        <div class="feature-link">
-          <span>Go to {{ feature.title }}</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="how-it-works-section">
+    <div class="how-it-works-container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Register</h3>
+          <p>Create your account with your consumer details</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>View Bills</h3>
+          <p>Check all your electricity bills in one place</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Pay Online</h3>
+          <p>Make secure payments instantly</p>
         </div>
       </div>
     </div>
@@ -44,16 +132,47 @@
 
   <!-- Info Section -->
   <div class="info-section">
-    <div class="info-card">
-      <div class="info-icon">⚡</div>
-      <h3>Why Choose Us?</h3>
-      <ul class="info-list">
-        <li>✅ Secure online payment processing</li>
-        <li>✅ Real-time bill tracking and updates</li>
-        <li>✅ 24/7 customer support</li>
-        <li>✅ Easy bill management</li>
-        <li>✅ Instant payment confirmation</li>
-      </ul>
+    <div class="info-container">
+      <div class="info-card">
+        <div class="info-icon">⚡</div>
+        <h3>Secure & Reliable</h3>
+        <p class="info-description">
+          Our platform uses industry-standard security measures to protect your data and transactions.
+          All payments are processed securely with encryption.
+        </p>
+        <ul class="info-list">
+          <li>✅ Secure online payment processing</li>
+          <li>✅ Real-time bill tracking and updates</li>
+          <li>✅ 24/7 customer support</li>
+          <li>✅ Easy bill management</li>
+          <li>✅ Instant payment confirmation</li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Electricity Billing System</h4>
+        <p>Your trusted partner for managing electricity bills</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a routerLink="/register">Register</a>
+        <a routerLink="/login">Login</a>
+        <a routerLink="/bills">View Bills</a>
+        <a routerLink="/pay-bill">Pay Bill</a>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <p>Available 24/7</p>
+        <p>support&#64;electricitybilling.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Electricity Billing System. All rights reserved.</p>
+    </div>
+  </footer>
 </div>
