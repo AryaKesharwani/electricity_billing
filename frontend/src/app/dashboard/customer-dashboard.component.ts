@@ -61,6 +61,7 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   logout() {
+    localStorage.removeItem('token');
     sessionStorage.clear();
     window.location.href = '/home';
   }

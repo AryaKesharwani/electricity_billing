@@ -8,6 +8,7 @@ export interface LoginResponse {
   userType: string;
   status: string;
   message: string;
+  token: string;
   loginTime: string;
 }
 
