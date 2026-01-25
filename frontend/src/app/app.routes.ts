@@ -24,13 +24,11 @@ export const routes: Routes = [
   },
   {
     path: 'admin/dashboard',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    loadComponent: () => import('./dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
   },
   {
     path: 'customer/dashboard',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    loadComponent: () => import('./dashboard/customer-dashboard.component').then(m => m.CustomerDashboardComponent)
   },
   {
     path: 'bills',

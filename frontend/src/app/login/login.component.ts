@@ -56,11 +56,16 @@ export class LoginComponent {
         this.isLoading = false;
         this.successMessage = response.message || 'Login successful!';
         
-        // Store user info in session/local storage (optional)
+        // Store user info in session/local storage
         if (response.userType) {
           sessionStorage.setItem('userType', response.userType);
           sessionStorage.setItem('email', response.email);
           sessionStorage.setItem('status', response.status);
+          // Store userName as consumerId if it looks like a consumer ID (starts with CUST or is numeric)
+          const userName = this.loginForm.value.userName;
+          if (response.userType === 'CUSTOMER' && (userName.startsWith('CUST') || /^\d+$/.test(userName))) {
+            sessionStorage.setItem('consumerId', userName);
+          }
         }
         
         // Redirect based on user type
