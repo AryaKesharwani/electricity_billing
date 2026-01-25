@@ -1,0 +1,137 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Customer Registration</h2>
+    <p class="subtitle">Register your account with Electricity Management System</p>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <strong>Success!</strong> {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <strong>Error!</strong> {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="consumerId">Consumer ID <span class="required">*</span></label>
+        <input
+          type="text"
+          id="consumerId"
+          formControlName="consumerId"
+          [class.invalid]="isFieldInvalid('consumerId')"
+          placeholder="Enter Consumer ID"
+        />
+        <span *ngIf="isFieldInvalid('consumerId')" class="error-text">
+          {{ getFieldError('consumerId') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="customerName">Customer Name <span class="required">*</span></label>
+        <input
+          type="text"
+          id="customerName"
+          formControlName="customerName"
+          [class.invalid]="isFieldInvalid('customerName')"
+          placeholder="Enter Customer Name"
+        />
+        <span *ngIf="isFieldInvalid('customerName')" class="error-text">
+          {{ getFieldError('customerName') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [class.invalid]="isFieldInvalid('email')"
+          placeholder="Enter Email Address"
+        />
+        <span *ngIf="isFieldInvalid('email')" class="error-text">
+          {{ getFieldError('email') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="mobileNumber">Mobile Number <span class="required">*</span></label>
+        <input
+          type="tel"
+          id="mobileNumber"
+          formControlName="mobileNumber"
+          [class.invalid]="isFieldInvalid('mobileNumber')"
+          placeholder="Enter 10-digit Mobile Number"
+          maxlength="10"
+        />
+        <span *ngIf="isFieldInvalid('mobileNumber')" class="error-text">
+          {{ getFieldError('mobileNumber') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea
+          id="address"
+          formControlName="address"
+          rows="3"
+          placeholder="Enter Address (Optional)"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="userId">User ID <span class="required">*</span></label>
+        <input
+          type="text"
+          id="userId"
+          formControlName="userId"
+          [class.invalid]="isFieldInvalid('userId')"
+          placeholder="Enter User ID"
+        />
+        <span *ngIf="isFieldInvalid('userId')" class="error-text">
+          {{ getFieldError('userId') }}
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password <span class="required">*</span></label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          [class.invalid]="isFieldInvalid('password')"
+          placeholder="Enter Password (Min 6 characters)"
+        />
+        <span *ngIf="isFieldInvalid('password')" class="error-text">
+          {{ getFieldError('password') }}
+        </span>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isLoading || registrationForm.invalid"
+        >
+          <span *ngIf="!isLoading">Register</span>
+          <span *ngIf="isLoading">Registering...</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="registrationForm.reset(); errorMessage = ''; successMessage = ''; fieldErrors = {}"
+          [disabled]="isLoading"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+
+    <div class="footer-links">
+      <p>Already have an account? <a routerLink="/login">Login here</a></p>
+      <p><a routerLink="/home">Back to Home</a></p>
+    </div>
+  </div>
+</div>
