@@ -130,7 +130,7 @@
           placeholder="Enter Payment Amount"
           step="0.01"
           min="0.01"
-          [max]="bill?.amount"
+          [max]="maxAmount"
         />
         <span *ngIf="isFieldInvalid('amount')" class="error-text">
           {{ getFieldError('amount') }}

@@ -240,4 +240,8 @@ export class PayBillComponent implements OnInit {
       this.bill = null;
     }
   }
+
+  get maxAmount(): number | null {
+    return this.bill?.amount ?? null;
+  }
 }
