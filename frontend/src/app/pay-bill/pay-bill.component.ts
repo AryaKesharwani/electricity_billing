@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../services/payment.service';
 import { BillService } from '../services/bill.service';
@@ -10,7 +10,7 @@ import { BillResponse } from '../models/bill.model';
 @Component({
   selector: 'app-pay-bill',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './pay-bill.component.html',
   styleUrl: './pay-bill.component.css'
 })
