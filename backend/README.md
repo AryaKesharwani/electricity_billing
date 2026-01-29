@@ -76,12 +76,18 @@ cd payments-service && mvn spring-boot:run
 
 ## Per-service databases
 
-Each service uses its own in-memory H2 database:
+Each service uses its own **persistent file-based H2 database**:
 
-- auth-service: `jdbc:h2:mem:authdb` (login table)  
-- users-service: `jdbc:h2:mem:usersdb` (customer table)  
-- billing-service: `jdbc:h2:mem:billingdb` (bill table)  
-- payments-service: `jdbc:h2:mem:paymentsdb` (payment table)  
+- auth-service: `jdbc:h2:file:./data/authdb` (login table)  
+- users-service: `jdbc:h2:file:./data/usersdb` (customer table)  
+- billing-service: `jdbc:h2:file:./data/billingdb` (bill table)  
+- payments-service: `jdbc:h2:file:./data/paymentsdb` (payment table)  
+
+**Data persistence**: All data persists across service restarts in the `data/` directory of each service.
+
+**H2 Console**: Access database at `http://localhost:<port>/h2-console` (username: `sa`, password: empty)
+
+See [DATABASE.md](./DATABASE.md) for complete database documentation, backup procedures, and troubleshooting.
 
 JWT secret is shared across services via `application.yml` in each service (change in production).
 
