@@ -74,6 +74,13 @@ npm start
 3. **API Gateway Health**: http://localhost:8080/api/health
    - Returns 200 OK
 
+4. **H2 Database Consoles** (optional):
+   - Auth: http://localhost:8081/h2-console
+   - Users: http://localhost:8082/h2-console
+   - Billing: http://localhost:8083/h2-console
+   - Payments: http://localhost:8084/h2-console
+   - See `.vscode/H2-CONSOLE-ACCESS.md` for login details
+
 ## 📁 Key Files Created
 
 ```
@@ -84,16 +91,23 @@ npm start
   ├── HOWTO-RUN-BACKEND.md          # Detailed backend instructions
   ├── START-FRONTEND.md             # Frontend instructions
   ├── FRONTEND-BACKEND-CONNECTION.md # Route mapping
+  ├── PLATFORM-SETUP.md             # Cross-platform setup guide
+  ├── H2-CONSOLE-ACCESS.md          # Database console access
   └── setup-java.sh                 # Set JAVA_HOME helper
 
 backend/
   ├── pom.xml                       # Parent POM with Maven/Lombok config
+  ├── DATABASE.md                   # Database documentation
   ├── eureka-server/                # Service discovery
   ├── api-gateway/                  # Entry point (CORS configured)
   ├── auth-service/                 # Login, JWT, admin register
+  │   └── data/                     # Persistent H2 database
   ├── users-service/                # Customers, admin operations
+  │   └── data/                     # Persistent H2 database
   ├── billing-service/              # Bills CRUD
+  │   └── data/                     # Persistent H2 database
   └── payments-service/             # Payment processing
+      └── data/                     # Persistent H2 database
 ```
 
 ## 🔧 Troubleshooting
@@ -143,6 +157,9 @@ backend/
 - **Check Eureka dashboard** - Verify all services are registered
 - **Watch terminal output** - Shows startup progress and errors
 - **Use dedicated terminals** - Each task opens its own terminal for easy monitoring
+- **Data persists!** - All your data (users, bills, payments) survives service restarts
+- **H2 Console** - Use the web interface to view/debug database data
+- **Backup data** - See `backend/DATABASE.md` for backup procedures
 
 ---
 
