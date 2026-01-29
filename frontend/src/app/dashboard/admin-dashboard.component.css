@@ -143,6 +143,168 @@
   background: #e0455a;
 }
 
+/* Manage Customers */
+.manage-customers {
+  margin-top: 40px;
+}
+
+.manage-customers h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.create-consumer-card,
+.customers-list-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.create-consumer-card h3,
+.customers-list-card h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.msg {
+  margin: 0 0 12px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.msg-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.msg-error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-group input.invalid,
+.form-group input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+.required {
+  color: #dc3545;
+}
+
+.error-text {
+  display: block;
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 4px;
+}
+
+.btn-create {
+  padding: 10px 24px;
+  background: #43e97b;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-create:hover:not(:disabled) {
+  background: #34d46a;
+}
+
+.btn-create:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading,
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.customers-table th,
+.customers-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.customers-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.customers-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.btn-delete {
+  padding: 6px 12px;
+  background: #f5576c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #e0455a;
+}
+
+.btn-delete:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .dashboard-header {
     padding: 20px;
@@ -159,6 +321,10 @@
   }
 
   .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
     grid-template-columns: 1fr;
   }
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RegisterAdminRequest, RegisterAdminResponse } from '../models/admin.model';
+import { CustomerListItem } from '../models/customer.model';
+import { RegisterCustomerRequest, RegisterCustomerResponse } from '../models/customer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,18 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  registerAdmin(request: RegisterAdminRequest): Observable<RegisterAdminResponse> {
+  getCustomers(): Observable<CustomerListItem[]> {
+    return this.http.get<CustomerListItem[]>(`${this.apiUrl}/customers`);
+  }
+
+  createConsumer(request: RegisterCustomerRequest): Observable<RegisterCustomerResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<RegisterAdminResponse>(`${this.apiUrl}/register`, request, { headers });
+    return this.http.post<RegisterCustomerResponse>(`${this.apiUrl}/customers`, request, { headers });
+  }
+
+  deleteCustomer(consumerId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/customers/${encodeURIComponent(consumerId)}`);
   }
 }

@@ -1,19 +1,25 @@
 package com.electricitybilling.service;
 
+import com.electricitybilling.dto.CustomerListItem;
 import com.electricitybilling.dto.RegisterCustomerRequest;
 import com.electricitybilling.dto.RegisterCustomerResponse;
 import com.electricitybilling.entity.Customer;
 import com.electricitybilling.entity.Login;
+import com.electricitybilling.exception.CustomerNotFoundException;
 import com.electricitybilling.exception.DuplicateEmailException;
 import com.electricitybilling.exception.InvalidEmailFormatException;
+import com.electricitybilling.repository.BillRepository;
 import com.electricitybilling.repository.CustomerRepository;
 import com.electricitybilling.repository.LoginRepository;
+import com.electricitybilling.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,8 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final LoginRepository loginRepository;
+    private final BillRepository billRepository;
+    private final PaymentRepository paymentRepository;
 
     @Transactional
     public RegisterCustomerResponse registerCustomer(RegisterCustomerRequest request) {
@@ -90,6 +98,41 @@ public class CustomerService {
         } catch (Exception e) {
             throw new RuntimeException("An error occurred during customer registration: " + e.getMessage(), e);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<CustomerListItem> findAllCustomers() {
+        return customerRepository.findAll().stream()
+                .map(c -> new CustomerListItem(
+                        c.getConsumerId(),
+                        c.getCustomerName(),
+                        c.getEmail(),
+                        c.getMobileNumber(),
+                        c.getAddress() != null ? c.getAddress() : ""
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteCustomer(String consumerId) {
+        Customer customer = customerRepository.findByConsumerId(consumerId)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with Consumer ID: " + consumerId));
+
+        // Delete payments for this consumer
+        List<com.electricitybilling.entity.Payment> payments = paymentRepository.findByConsumerId(consumerId);
+        paymentRepository.deleteAll(payments);
+
+        // Delete bills for this consumer
+        List<com.electricitybilling.entity.Bill> bills = billRepository.findByConsumerId(consumerId);
+        billRepository.deleteAll(bills);
+
+        // Delete login record for this customer
+        loginRepository.findByConsumerId(consumerId)
+                .or(() -> loginRepository.findByEmail(customer.getEmail()))
+                .ifPresent(loginRepository::delete);
+
+        // Delete customer
+        customerRepository.delete(customer);
     }
 
     private void validateEmailFormat(String email) {

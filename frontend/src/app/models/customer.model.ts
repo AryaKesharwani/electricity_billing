@@ -1,3 +1,11 @@
+export interface CustomerListItem {
+  consumerId: string;
+  customerName: string;
+  email: string;
+  mobileNumber: string;
+  address: string;
+}
+
 export interface RegisterCustomerRequest {
   consumerId: string;
   customerName: string;

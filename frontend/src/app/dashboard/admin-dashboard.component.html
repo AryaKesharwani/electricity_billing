@@ -33,11 +33,109 @@
           <p>View and manage all customer bills</p>
           <a routerLink="/bills" class="action-link">View Bills →</a>
         </div>
-        <div class="action-card">
-          <div class="action-icon">👥</div>
-          <h3>Manage Customers</h3>
-          <p>View and manage customer accounts</p>
-          <a routerLink="/home" class="action-link">Coming Soon →</a>
+      </div>
+    </div>
+
+    <!-- Manage Customers -->
+    <div class="manage-customers">
+      <h2>Manage Customers</h2>
+
+      <!-- Create new consumer form -->
+      <div class="create-consumer-card">
+        <h3>Create New Consumer</h3>
+        <p *ngIf="createSuccess" class="msg msg-success">{{ createSuccess }}</p>
+        <p *ngIf="createError" class="msg msg-error">{{ createError }}</p>
+        <form [formGroup]="createForm" (ngSubmit)="onSubmitCreate()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="consumerId">Consumer ID <span class="required">*</span></label>
+              <input id="consumerId" formControlName="consumerId" placeholder="Consumer ID" />
+              <span class="error-text" *ngIf="createForm.get('consumerId')?.invalid && createForm.get('consumerId')?.touched">
+                Required, 2–50 characters
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="customerName">Customer Name <span class="required">*</span></label>
+              <input id="customerName" formControlName="customerName" placeholder="Full name" />
+              <span class="error-text" *ngIf="createForm.get('customerName')?.invalid && createForm.get('customerName')?.touched">
+                Required, 2–100 characters
+              </span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input id="email" type="email" formControlName="email" placeholder="Email" />
+              <span class="error-text" *ngIf="createForm.get('email')?.invalid && createForm.get('email')?.touched">
+                Valid email required
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="mobileNumber">Mobile <span class="required">*</span></label>
+              <input id="mobileNumber" formControlName="mobileNumber" placeholder="10 digits, 6–9 start" maxlength="10" />
+              <span class="error-text" *ngIf="createForm.get('mobileNumber')?.invalid && createForm.get('mobileNumber')?.touched">
+                10 digits, start with 6–9
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input id="address" formControlName="address" placeholder="Address (optional)" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userId">User ID <span class="required">*</span></label>
+              <input id="userId" formControlName="userId" placeholder="Login user ID" />
+              <span class="error-text" *ngIf="createForm.get('userId')?.invalid && createForm.get('userId')?.touched">
+                Required, 3–50 characters
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="password">Password <span class="required">*</span></label>
+              <input id="password" type="password" formControlName="password" placeholder="Min 6 characters" />
+              <span class="error-text" *ngIf="createForm.get('password')?.invalid && createForm.get('password')?.touched">
+                Min 6 characters
+              </span>
+            </div>
+          </div>
+          <button type="submit" class="btn-create" [disabled]="isCreating || createForm.invalid">
+            {{ isCreating ? 'Creating...' : 'Create Consumer' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Customers list -->
+      <div class="customers-list-card">
+        <h3>Existing Consumers</h3>
+        <div *ngIf="isLoadingCustomers" class="loading">Loading customers...</div>
+        <div *ngIf="!isLoadingCustomers && customers.length === 0" class="empty">No customers yet. Create one above.</div>
+        <div *ngIf="!isLoadingCustomers && customers.length > 0" class="table-wrap">
+          <table class="customers-table">
+            <thead>
+              <tr>
+                <th>Consumer ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of customers">
+                <td>{{ c.consumerId }}</td>
+                <td>{{ c.customerName }}</td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.mobileNumber }}</td>
+                <td>{{ c.address || '–' }}</td>
+                <td>
+                  <button type="button" class="btn-delete" (click)="deleteCustomer(c.consumerId)" [disabled]="deletingId === c.consumerId">
+                    {{ deletingId === c.consumerId ? 'Deleting...' : 'Delete' }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
