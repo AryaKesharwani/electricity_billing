@@ -4,74 +4,92 @@
     {
       "label": "Backend: 1. Eureka Server",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/eureka-server",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     },
     {
       "label": "Backend: 2. API Gateway",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/api-gateway",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     },
     {
       "label": "Backend: 3. Auth Service",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/auth-service",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     },
     {
       "label": "Backend: 4. Users Service",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/users-service",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     },
     {
       "label": "Backend: 5. Billing Service",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/billing-service",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     },
     {
       "label": "Backend: 6. Payments Service",
       "type": "shell",
-      "command": "mvn",
-      "args": ["spring-boot:run"],
+      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
       "options": {
         "cwd": "${workspaceFolder}/backend/payments-service",
-        "env": {}
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
       },
       "group": "build",
-      "presentation": { "reveal": "always", "panel": "dedicated" }
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
     }
   ]
 }
