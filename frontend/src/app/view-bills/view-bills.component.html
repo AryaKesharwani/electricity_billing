@@ -5,7 +5,7 @@
       <p class="subtitle">View all your electricity bills</p>
     </div>
 
-    <!-- Consumer ID Input -->
+    <!-- Consumer ID Input + Admin: Load all -->
     <div class="search-section">
       <div class="form-group">
         <label for="consumerId">Consumer ID</label>
@@ -25,6 +25,15 @@
             [disabled]="isLoading || !consumerId"
           >
             Search
+          </button>
+          <button
+            *ngIf="isAdmin"
+            type="button"
+            class="btn btn-load-all"
+            (click)="loadAllBills()"
+            [disabled]="isLoading"
+          >
+            Load All Bills
           </button>
         </div>
       </div>
@@ -47,17 +56,20 @@
         <thead>
           <tr>
             <th>Bill ID</th>
+            <th>Consumer ID</th>
             <th>Bill Date</th>
             <th>Due Date</th>
             <th>Units Consumed</th>
             <th>Amount</th>
             <th>Status</th>
             <th>Description</th>
+            <th *ngIf="isAdmin">Change Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let bill of bills">
             <td>{{ bill.billId }}</td>
+            <td>{{ bill.consumerId }}</td>
             <td>{{ formatDate(bill.billDate) }}</td>
             <td>{{ formatDate(bill.dueDate) }}</td>
             <td>{{ bill.unitsConsumed }} units</td>
@@ -68,6 +80,19 @@
               </span>
             </td>
             <td>{{ bill.description || '-' }}</td>
+            <td *ngIf="isAdmin">
+              <select
+                class="status-select"
+                [ngModel]="bill.status"
+                (ngModelChange)="changeStatus(bill, $event)"
+                [disabled]="updatingBillId === bill.billId"
+              >
+                <option value="PAID">PAID</option>
+                <option value="UNPAID">UNPAID</option>
+                <option value="OVERDUE">OVERDUE</option>
+              </select>
+              <span *ngIf="updatingBillId === bill.billId" class="updating-text">Updating...</span>
+            </td>
           </tr>
         </tbody>
       </table>

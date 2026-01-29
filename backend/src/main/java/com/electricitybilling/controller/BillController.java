@@ -2,6 +2,7 @@ package com.electricitybilling.controller;
 
 import com.electricitybilling.dto.BillResponse;
 import com.electricitybilling.dto.CreateBillRequest;
+import com.electricitybilling.dto.UpdateBillStatusRequest;
 import com.electricitybilling.service.BillService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -70,5 +71,22 @@ public class BillController {
         
         BillResponse response = billService.createBill(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Update bill status",
+            description = "Update a bill's status (PAID, UNPAID, OVERDUE). Admin use."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bill status updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status"),
+            @ApiResponse(responseCode = "404", description = "Bill not found")
+    })
+    @PatchMapping("/{billId}/status")
+    public ResponseEntity<BillResponse> updateBillStatus(
+            @PathVariable Long billId,
+            @Valid @RequestBody UpdateBillStatusRequest request) {
+        BillResponse response = billService.updateBillStatus(billId, request);
+        return ResponseEntity.ok(response);
     }
 }

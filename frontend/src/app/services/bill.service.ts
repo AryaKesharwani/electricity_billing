@@ -31,4 +31,11 @@ export class BillService {
     });
     return this.http.post<BillResponse>(`${this.apiUrl}`, request, { headers });
   }
+
+  updateBillStatus(billId: number, status: string): Observable<BillResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<BillResponse>(`${this.apiUrl}/${billId}/status`, { status }, { headers });
+  }
 }

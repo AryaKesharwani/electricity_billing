@@ -18,6 +18,8 @@ export class ViewBillsComponent implements OnInit {
   errorMessage = '';
   consumerId: string = '';
   hasBills = false;
+  isAdmin = false;
+  updatingBillId: number | null = null;
 
   constructor(
     private billService: BillService,
@@ -26,12 +28,13 @@ export class ViewBillsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isAdmin = sessionStorage.getItem('userType') === 'ADMIN';
     // Get consumerId from query params or session storage
     this.route.queryParams.subscribe(params => {
       this.consumerId = params['consumerId'] || sessionStorage.getItem('consumerId') || '';
       if (this.consumerId) {
         this.loadBills();
-      } else {
+      } else if (!this.isAdmin) {
         this.errorMessage = 'Consumer ID is required to view bills.';
       }
     });
@@ -106,5 +109,37 @@ export class ViewBillsComponent implements OnInit {
     if (this.consumerId) {
       this.loadBills();
     }
+  }
+
+  loadAllBills() {
+    this.consumerId = '';
+    this.errorMessage = '';
+    this.isLoading = true;
+    this.bills = [];
+    this.billService.viewAllBills().subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.bills = response;
+        this.hasBills = response.length > 0;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.handleError(error);
+      }
+    });
+  }
+
+  changeStatus(bill: BillResponse, newStatus: string) {
+    if (bill.status === newStatus) return;
+    this.updatingBillId = bill.billId;
+    this.billService.updateBillStatus(bill.billId, newStatus).subscribe({
+      next: (updated) => {
+        bill.status = updated.status;
+        this.updatingBillId = null;
+      },
+      error: () => {
+        this.updatingBillId = null;
+      }
+    });
   }
 }

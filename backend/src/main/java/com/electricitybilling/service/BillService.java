@@ -2,7 +2,9 @@ package com.electricitybilling.service;
 
 import com.electricitybilling.dto.BillResponse;
 import com.electricitybilling.dto.CreateBillRequest;
+import com.electricitybilling.dto.UpdateBillStatusRequest;
 import com.electricitybilling.entity.Bill;
+import com.electricitybilling.exception.BillNotFoundException;
 import com.electricitybilling.exception.CustomerNotFoundException;
 import com.electricitybilling.repository.BillRepository;
 import com.electricitybilling.repository.CustomerRepository;
@@ -89,6 +91,16 @@ public class BillService {
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while creating bill: " + e.getMessage(), e);
         }
+    }
+
+    @Transactional
+    public BillResponse updateBillStatus(Long billId, UpdateBillStatusRequest request) {
+        Bill bill = billRepository.findById(billId)
+                .orElseThrow(() -> new BillNotFoundException("Bill not found with ID: " + billId));
+        Bill.BillStatus newStatus = Bill.BillStatus.valueOf(request.getStatus());
+        bill.setStatus(newStatus);
+        bill = billRepository.save(bill);
+        return convertToResponse(bill);
     }
 
     private BillResponse convertToResponse(Bill bill) {
