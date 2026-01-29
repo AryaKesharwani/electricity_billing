@@ -2,9 +2,11 @@ package com.electricitybilling.service;
 
 import com.electricitybilling.dto.LoginRequest;
 import com.electricitybilling.dto.LoginResponse;
+import com.electricitybilling.entity.Customer;
 import com.electricitybilling.entity.Login;
 import com.electricitybilling.exception.AccountDeactivatedException;
 import com.electricitybilling.exception.InvalidCredentialsException;
+import com.electricitybilling.repository.CustomerRepository;
 import com.electricitybilling.repository.LoginRepository;
 import com.electricitybilling.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginService {
 
+    private static final String HARDCODED_ADMIN_EMAIL = "admin@electricity.com";
+    private static final String HARDCODED_ADMIN_PASSWORD = "admin123";
+
     private final LoginRepository loginRepository;
+    private final CustomerRepository customerRepository;
     private final JwtUtil jwtUtil;
 
     @Transactional(readOnly = true)
     public LoginResponse validateLogin(LoginRequest request) {
         try {
+            // Check hardcoded admin credentials first
+            if (HARDCODED_ADMIN_EMAIL.equalsIgnoreCase(request.getUserName())
+                    && HARDCODED_ADMIN_PASSWORD.equals(request.getPassword())) {
+                String token = jwtUtil.generateToken(
+                        HARDCODED_ADMIN_EMAIL,
+                        Login.UserType.ADMIN.name(),
+                        null
+                );
+                return new LoginResponse(
+                        HARDCODED_ADMIN_EMAIL,
+                        Login.UserType.ADMIN.name(),
+                        Login.AccountStatus.ACTIVE.name(),
+                        "Login successful",
+                        token,
+                        (String) null
+                );
+            }
+
             // Find user by email or userId
             Optional<Login> loginOptional = findUserByUserName(request.getUserName());
 
@@ -50,13 +74,27 @@ public class LoginService {
                     login.getConsumerId()
             );
 
+            // For CUSTOMER, fetch customer name for welcome message
+            String customerName = null;
+            if (login.getUserType() == Login.UserType.CUSTOMER) {
+                customerName = customerRepository.findByEmail(login.getEmail())
+                        .map(Customer::getCustomerName)
+                        .orElse(null);
+                if (customerName == null && login.getConsumerId() != null) {
+                    customerName = customerRepository.findByConsumerId(login.getConsumerId())
+                            .map(Customer::getCustomerName)
+                            .orElse(null);
+                }
+            }
+
             // Return successful login response with JWT token
             return new LoginResponse(
                     login.getEmail(),
                     login.getUserType().name(),
                     login.getStatus().name(),
                     "Login successful",
-                    token
+                    token,
+                    customerName
             );
 
         } catch (InvalidCredentialsException | AccountDeactivatedException e) {

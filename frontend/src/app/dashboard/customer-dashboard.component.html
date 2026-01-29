@@ -3,7 +3,7 @@
     <div class="header-content">
       <div>
         <h1>Customer Dashboard</h1>
-        <p class="welcome-text">Welcome back, {{ userEmail || 'Customer' }}!</p>
+        <p class="welcome-text">Welcome back, {{ customerName || userEmail || 'Customer' }}!</p>
       </div>
       <button class="btn-logout" (click)="logout()">Logout</button>
     </div>

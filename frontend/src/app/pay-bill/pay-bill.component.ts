@@ -35,9 +35,36 @@ export class PayBillComponent implements OnInit {
     this.paymentForm = this.fb.group({
       billId: ['', [Validators.required]],
       amount: ['', [Validators.required, Validators.min(0.01)]],
-      paymentMethod: ['ONLINE'],
+      paymentMethod: ['CARD'],
+      cardNumber: ['', [Validators.required, Validators.pattern(/^\d{13,19}$/)]],
+      cardExpiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/(2[0-9]|3[0-9])$/)]],
+      cardCvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
       transactionReference: ['']
     });
+  }
+
+  /** Luhn algorithm for card number validation */
+  private luhnCheck(cardNumber: string): boolean {
+    const digits = cardNumber.replace(/\D/g, '');
+    if (digits.length < 13 || digits.length > 19) return false;
+    let sum = 0;
+    let isEven = false;
+    for (let i = digits.length - 1; i >= 0; i--) {
+      let digit = parseInt(digits[i], 10);
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      isEven = !isEven;
+    }
+    return sum % 10 === 0;
+  }
+
+  get isCardNumberValid(): boolean {
+    const cardNumber = this.paymentForm?.get('cardNumber')?.value;
+    if (!cardNumber || cardNumber.length < 13) return false;
+    return this.luhnCheck(cardNumber);
   }
 
   ngOnInit() {
@@ -103,6 +130,14 @@ export class PayBillComponent implements OnInit {
       return;
     }
 
+    // Validate card number with Luhn algorithm
+    const cardNumber = this.paymentForm.value.cardNumber?.replace(/\s/g, '') || '';
+    if (!this.luhnCheck(cardNumber)) {
+      this.paymentForm.get('cardNumber')?.setErrors({ luhn: true });
+      this.errorMessage = 'Invalid card number. Please check and try again.';
+      return;
+    }
+
     // Validate amount doesn't exceed bill amount
     if (this.bill && this.paymentForm.value.amount > this.bill.amount) {
       this.errorMessage = 'Payment amount cannot exceed bill amount.';
@@ -111,11 +146,13 @@ export class PayBillComponent implements OnInit {
 
     this.isLoading = true;
 
+    // Send last 4 digits as transaction reference (no full card stored)
+    const lastFour = cardNumber.slice(-4);
     const request: PayBillRequest = {
       billId: this.paymentForm.value.billId,
       amount: this.paymentForm.value.amount,
-      paymentMethod: this.paymentForm.value.paymentMethod || 'ONLINE',
-      transactionReference: this.paymentForm.value.transactionReference || undefined
+      paymentMethod: 'CARD',
+      transactionReference: `Card ****${lastFour}`
     };
 
     this.paymentService.payBill(request).subscribe({
@@ -198,6 +235,16 @@ export class PayBillComponent implements OnInit {
     if (control?.hasError('min') && control.touched) {
       return 'Amount must be greater than 0';
     }
+
+    if (control?.hasError('luhn') && control.touched) {
+      return 'Invalid card number (failed checksum)';
+    }
+
+    if (control?.hasError('pattern') && control.touched) {
+      if (fieldName === 'cardNumber') return 'Card number must be 13–19 digits';
+      if (fieldName === 'cardExpiry') return 'Use MM/YY (e.g. 12/28)';
+      if (fieldName === 'cardCvv') return 'CVV must be 3 or 4 digits';
+    }
     
     return '';
   }
@@ -207,6 +254,9 @@ export class PayBillComponent implements OnInit {
       billId: 'Bill ID',
       amount: 'Amount',
       paymentMethod: 'Payment Method',
+      cardNumber: 'Card Number',
+      cardExpiry: 'Expiry',
+      cardCvv: 'CVV',
       transactionReference: 'Transaction Reference'
     };
     return labels[fieldName] || fieldName;
@@ -215,6 +265,29 @@ export class PayBillComponent implements OnInit {
   isFieldInvalid(fieldName: string): boolean {
     const control = this.paymentForm.get(fieldName);
     return !!(control && control.invalid && control.touched);
+  }
+
+  onCardNumberInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '');
+    input.value = value;
+    this.paymentForm.patchValue({ cardNumber: value }, { emitEvent: true });
+  }
+
+  onCardExpiryInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    input.value = value;
+    this.paymentForm.patchValue({ cardExpiry: value }, { emitEvent: true });
+  }
+
+  onCardCvvInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/\D/g, '').slice(0, 4);
+    this.paymentForm.patchValue({ cardCvv: input.value }, { emitEvent: true });
   }
 
   formatCurrency(amount: number): string {

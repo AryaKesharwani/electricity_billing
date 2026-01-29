@@ -25,13 +25,13 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registrationForm = this.fb.group({
-      consumerId: ['', [Validators.required]],
-      customerName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      mobileNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      address: [''],
-      userId: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      consumerId: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      customerName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^[a-zA-Z\s\.\-']+$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
+      mobileNumber: ['', [Validators.required, Validators.pattern(/^[6-9][0-9]{9}$/)]],
+      address: ['', [Validators.maxLength(500)]],
+      userId: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]]
     });
   }
 
@@ -135,12 +135,25 @@ export class RegisterComponent {
     
     if (control?.hasError('pattern') && control.touched) {
       if (fieldName === 'mobileNumber') {
-        return 'Mobile number must be 10 digits';
+        return 'Mobile number must be 10 digits and start with 6, 7, 8 or 9';
+      }
+      if (fieldName === 'customerName') {
+        return 'Customer name can only contain letters, spaces, hyphens and apostrophes';
       }
     }
     
     if (control?.hasError('minlength') && control.touched) {
-      return 'Password must be at least 6 characters';
+      const min = control.errors?.['minlength']?.requiredLength;
+      if (fieldName === 'password') return 'Password must be at least 6 characters';
+      if (fieldName === 'consumerId') return `Consumer ID must be at least ${min} characters`;
+      if (fieldName === 'customerName') return `Customer name must be at least ${min} characters`;
+      if (fieldName === 'userId') return `User ID must be at least ${min} characters`;
+      return `Must be at least ${min} characters`;
+    }
+    
+    if (control?.hasError('maxlength') && control.touched) {
+      const max = control.errors?.['maxlength']?.requiredLength;
+      return `Must not exceed ${max} characters`;
     }
     
     if (control?.hasError('duplicate') && control.touched) {
@@ -156,6 +169,7 @@ export class RegisterComponent {
       customerName: 'Customer Name',
       email: 'Email',
       mobileNumber: 'Mobile Number',
+      address: 'Address',
       userId: 'User ID',
       password: 'Password'
     };

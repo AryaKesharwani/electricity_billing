@@ -14,6 +14,7 @@ import { BillResponse } from '../models/bill.model';
 })
 export class CustomerDashboardComponent implements OnInit {
   userEmail: string = '';
+  customerName: string = '';
   userType: string = '';
   consumerId: string = '';
   recentBills: BillResponse[] = [];
@@ -26,6 +27,7 @@ export class CustomerDashboardComponent implements OnInit {
   ngOnInit() {
     // Get user info from session storage
     this.userEmail = sessionStorage.getItem('email') || '';
+    this.customerName = sessionStorage.getItem('customerName') || '';
     this.userType = sessionStorage.getItem('userType') || '';
     this.consumerId = sessionStorage.getItem('consumerId') || '';
 

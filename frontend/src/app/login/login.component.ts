@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { LoginRequest } from '../models/auth.model';
 
@@ -22,7 +22,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required]],
@@ -66,6 +67,9 @@ export class LoginComponent {
           sessionStorage.setItem('userType', response.userType);
           sessionStorage.setItem('email', response.email);
           sessionStorage.setItem('status', response.status);
+          if (response.customerName) {
+            sessionStorage.setItem('customerName', response.customerName);
+          }
           
           // Store userName as consumerId if it looks like a consumer ID (starts with CUST or is numeric)
           const userName = this.loginForm.value.userName;
@@ -74,13 +78,14 @@ export class LoginComponent {
           }
         }
         
-        // Redirect based on user type
+        // Redirect to returnUrl if present (e.g. from auth guard), otherwise to dashboard
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        const allowedReturnUrls = ['/bills', '/pay-bill'];
+        const redirectTo = returnUrl && allowedReturnUrls.includes(returnUrl)
+          ? returnUrl
+          : (response.userType === 'ADMIN' ? '/admin/dashboard' : '/customer/dashboard');
         setTimeout(() => {
-          if (response.userType === 'ADMIN') {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/customer/dashboard']);
-          }
+          this.router.navigateByUrl(redirectTo);
         }, 1500);
       },
       error: (error) => {

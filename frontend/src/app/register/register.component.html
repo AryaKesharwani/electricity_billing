@@ -77,8 +77,13 @@
           id="address"
           formControlName="address"
           rows="3"
-          placeholder="Enter Address (Optional)"
+          [class.invalid]="isFieldInvalid('address')"
+          placeholder="Enter Address (Optional, max 500 characters)"
+          maxlength="500"
         ></textarea>
+        <span *ngIf="isFieldInvalid('address')" class="error-text">
+          {{ getFieldError('address') }}
+        </span>
       </div>
 
       <div class="form-group">

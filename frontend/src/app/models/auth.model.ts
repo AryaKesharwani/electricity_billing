@@ -10,6 +10,7 @@ export interface LoginResponse {
   message: string;
   token: string;
   loginTime: string;
+  customerName?: string;
 }
 
 export interface ApiError {
