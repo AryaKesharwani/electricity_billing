@@ -93,7 +93,7 @@ h2 {
   transform: none;
 }
 
-.btn-load-all {
+.btn-clear {
   padding: 12px 24px;
   background-color: #f5576c;
   color: white;
@@ -105,13 +105,16 @@ h2 {
   transition: all 0.3s;
 }
 
-.btn-load-all:hover:not(:disabled) {
+.btn-clear:hover:not(:disabled) {
   background-color: #e0455a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
 }
 
-.btn-load-all:disabled {
-  opacity: 0.7;
+.btn-clear:disabled {
+  background-color: #ccc;
   cursor: not-allowed;
+  transform: none;
 }
 
 .status-select {

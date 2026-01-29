@@ -32,25 +32,23 @@ export class ViewBillsComponent implements OnInit {
     // Get consumerId from query params or session storage
     this.route.queryParams.subscribe(params => {
       this.consumerId = params['consumerId'] || sessionStorage.getItem('consumerId') || '';
-      if (this.consumerId) {
-        this.loadBills();
-      } else if (!this.isAdmin) {
-        this.errorMessage = 'Consumer ID is required to view bills.';
-      }
+      // Load all bills on init - for admins, show all; for customers, show their bills
+      this.loadBills();
     });
   }
 
   loadBills() {
-    if (!this.consumerId) {
-      this.errorMessage = 'Consumer ID is required.';
-      return;
-    }
-
     this.isLoading = true;
     this.errorMessage = '';
     this.bills = [];
 
-    this.billService.viewBills(this.consumerId).subscribe({
+    // If no consumerId, load all bills (mainly for admins)
+    // If consumerId provided, search for that specific consumer
+    const request = this.consumerId 
+      ? this.billService.viewBills(this.consumerId)
+      : this.billService.viewAllBills();
+
+    request.subscribe({
       next: (response) => {
         this.isLoading = false;
         this.bills = response;
@@ -106,27 +104,13 @@ export class ViewBillsComponent implements OnInit {
   }
 
   onConsumerIdChange() {
-    if (this.consumerId) {
-      this.loadBills();
-    }
+    // Load bills with current consumerId (empty = all bills)
+    this.loadBills();
   }
 
-  loadAllBills() {
+  clearSearch() {
     this.consumerId = '';
-    this.errorMessage = '';
-    this.isLoading = true;
-    this.bills = [];
-    this.billService.viewAllBills().subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        this.bills = response;
-        this.hasBills = response.length > 0;
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.handleError(error);
-      }
-    });
+    this.loadBills();
   }
 
   changeStatus(bill: BillResponse, newStatus: string) {
