@@ -1,0 +1,17 @@
+package com.electricitybilling.users.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomerListItem {
+
+    private String consumerId;
+    private String customerName;
+    private String email;
+    private String mobileNumber;
+    private String address;
+}

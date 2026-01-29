@@ -1,0 +1,77 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Auth service: login, register-admin
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        # Users service: customers
+        - id: users-service-customers
+          uri: lb://users-service
+          predicates:
+            - Path=/api/customers/**
+          filters:
+            - StripPrefix=0
+
+        # Admin register -> auth-service (must be before generic /api/admin/**)
+        - id: auth-admin-register
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/admin/register
+          filters:
+            - StripPrefix=0
+
+        # Users service: admin (customers, list, delete)
+        - id: users-service-admin
+          uri: lb://users-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=0
+
+        # Billing service: bills
+        - id: billing-service
+          uri: lb://billing-service
+          predicates:
+            - Path=/api/bills/**
+          filters:
+            - StripPrefix=0
+
+        # Payments service
+        - id: payments-service
+          uri: lb://payments-service
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=0
+
+        # Health - forwarded to auth-service
+        - id: health
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/health
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
