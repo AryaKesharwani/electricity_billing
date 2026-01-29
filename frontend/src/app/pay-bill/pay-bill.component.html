@@ -143,7 +143,7 @@
       <!-- Payment Method (Card only) -->
       <div class="form-group">
         <label for="paymentMethod">Payment Method</label>
-        <select id="paymentMethod" formControlName="paymentMethod" class="select-input" disabled>
+        <select id="paymentMethod" formControlName="paymentMethod" class="select-input" [disabled]="true">
           <option value="CARD">Card</option>
         </select>
         <small class="hint">Payments are accepted only via card.</small>
