@@ -4,13 +4,10 @@
     {
       "label": "Backend: 1. Eureka Server",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/eureka-server",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/eureka-server"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -19,13 +16,10 @@
     {
       "label": "Backend: 2. API Gateway",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/api-gateway",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/api-gateway"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -34,13 +28,10 @@
     {
       "label": "Backend: 3. Auth Service",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/auth-service",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/auth-service"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -49,13 +40,10 @@
     {
       "label": "Backend: 4. Users Service",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/users-service",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/users-service"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -64,13 +52,10 @@
     {
       "label": "Backend: 5. Billing Service",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/billing-service",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/billing-service"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -79,13 +64,10 @@
     {
       "label": "Backend: 6. Payments Service",
       "type": "shell",
-      "command": "export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home && mvn spring-boot:run",
+      "command": "mvn",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}/backend/payments-service",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/backend/payments-service"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },
@@ -94,13 +76,10 @@
     {
       "label": "Frontend: Start Angular Dev Server",
       "type": "shell",
-      "command": "npm start",
+      "command": "npm",
+      "args": ["start"],
       "options": {
-        "cwd": "${workspaceFolder}/frontend",
-        "shell": {
-          "executable": "/bin/zsh",
-          "args": ["-l", "-c"]
-        }
+        "cwd": "${workspaceFolder}/frontend"
       },
       "group": "build",
       "presentation": { "reveal": "always", "panel": "dedicated" },

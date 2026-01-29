@@ -13,11 +13,33 @@ The backend was refactored from a **monolithic Spring Boot app** to **6 microser
 
 **Frontend**: No changes needed! Still uses `http://localhost:8080/api/*`
 
+## ⚙️ Platform Support
+
+This project now works on **Windows**, **macOS**, and **Linux**! 
+
+**First time setup?** See `.vscode/PLATFORM-SETUP.md` for platform-specific installation instructions.
+
 ## 🚀 Start Everything (2 Steps)
+
+### Prerequisites
+
+Make sure you have:
+- ✅ **Java 17** installed and `JAVA_HOME` set
+- ✅ **Maven** installed
+- ✅ **Node.js** (v18+) installed
+
+Verify with:
+```bash
+java -version    # Should show version 17
+mvn -version     # Should show Maven 3.x with Java 17
+node --version   # Should show v18 or higher
+```
+
+**Need help?** See `.vscode/PLATFORM-SETUP.md`
 
 ### Step 1: Start Backend Services
 
-Press **Cmd+Shift+P** → Type "**Tasks: Run Task**"
+Press **Cmd+Shift+P** (macOS) or **Ctrl+Shift+P** (Windows/Linux) → Type "**Tasks: Run Task**"
 
 Run in this order (wait 10-15 seconds between each):
 1. **Backend: 1. Eureka Server** ← Wait for "Started EurekaServerApplication"
@@ -76,9 +98,15 @@ backend/
 
 ## 🔧 Troubleshooting
 
-**"mvn not found"**
-- Already installed via `brew install maven`
-- Tasks are pre-configured with Java 17
+**"mvn not found" or "java not found"**
+- Make sure Maven and Java 17 are installed
+- Verify they're in your PATH: `mvn -version` and `java -version`
+- See `.vscode/PLATFORM-SETUP.md` for installation instructions
+
+**"Unsupported class file major version"**
+- Your JAVA_HOME is not pointing to Java 17
+- Set JAVA_HOME to Java 17 (see PLATFORM-SETUP.md)
+- Verify with: `mvn -version` (should show Java 17)
 
 **"Connection refused" on startup**
 - Normal! Services retry connecting to Eureka every 30 seconds
@@ -88,9 +116,10 @@ backend/
 - API Gateway has CORS configured for `http://localhost:4200`
 - Restart API Gateway if you see CORS issues
 
-**"argfile" error in Java debugger**
-- Use Tasks instead of launch configs (more reliable)
-- Tasks are the recommended way to run services
+**Port already in use**
+- A service is already running on that port
+- Windows: `netstat -ano | findstr :8080` then `taskkill /PID <PID> /F`
+- macOS/Linux: `lsof -ti:8080 | xargs kill -9`
 
 ## 🧪 Test the System
 
