@@ -1,0 +1,72 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "1. Eureka Server",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.eureka.EurekaServerApplication",
+      "projectName": "eureka-server",
+      "cwd": "${workspaceFolder}/backend/eureka-server"
+    },
+    {
+      "type": "java",
+      "name": "2. API Gateway",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.gateway.ApiGatewayApplication",
+      "projectName": "api-gateway",
+      "cwd": "${workspaceFolder}/backend/api-gateway"
+    },
+    {
+      "type": "java",
+      "name": "3. Auth Service",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.auth.AuthServiceApplication",
+      "projectName": "auth-service",
+      "cwd": "${workspaceFolder}/backend/auth-service"
+    },
+    {
+      "type": "java",
+      "name": "4. Users Service",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.users.UsersServiceApplication",
+      "projectName": "users-service",
+      "cwd": "${workspaceFolder}/backend/users-service"
+    },
+    {
+      "type": "java",
+      "name": "5. Billing Service",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.billing.BillingServiceApplication",
+      "projectName": "billing-service",
+      "cwd": "${workspaceFolder}/backend/billing-service"
+    },
+    {
+      "type": "java",
+      "name": "6. Payments Service",
+      "request": "launch",
+      "mainClass": "com.electricitybilling.payments.PaymentsServiceApplication",
+      "projectName": "payments-service",
+      "cwd": "${workspaceFolder}/backend/payments-service"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Backend: Eureka + Gateway",
+      "configurations": ["1. Eureka Server", "2. API Gateway"],
+      "stopAll": true
+    },
+    {
+      "name": "Backend: All 6 services",
+      "configurations": [
+        "1. Eureka Server",
+        "2. API Gateway",
+        "3. Auth Service",
+        "4. Users Service",
+        "5. Billing Service",
+        "6. Payments Service"
+      ],
+      "stopAll": true
+    }
+  ]
+}
